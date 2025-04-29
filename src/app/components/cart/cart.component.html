@@ -1,0 +1,19 @@
+<div class="cart-container">
+  <div *ngFor="let item of cartItems" class="cart-item">
+    <div class="item-info">
+      <div class="item-name">{{ item.product.name }}</div>
+      <div class="item-quantity">Cantidad: {{ item.quantity }}</div>
+    </div>
+    <div class="item-total">{{ (item.product.price * item.quantity) | currency:'ARS' }}</div>
+  </div>
+
+  <div class="cart-summary">
+    <div class="summary-label">Total:</div>
+    <div class="summary-amount">{{ getTotal() | currency:'ARS' }}</div>
+  </div>
+
+  <button class="whatsapp-button" (click)="sendOrder()">
+    <img src="assets/whatsapp.svg" alt="WhatsApp" class="whatsapp-icon">
+    Enviar pedido
+  </button>
+</div>

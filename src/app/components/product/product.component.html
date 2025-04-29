@@ -1,0 +1,17 @@
+<div class="product-card">
+  <img class="product-image" [src]="generateImageUrl(product.id)" [alt]="product.name">
+  <div class="product-content">
+    <h2 class="product-name">{{ product.name }}</h2>
+    <p class="product-price">{{ product.price | currency:'ARS' }}</p>
+
+    <div class="product-stock" [ngClass]="{'out-of-stock': product.stock == 0}">
+      <span class="stock-label">Stock:</span>
+      <span class="stock-value">
+        {{ product.stock === 0 ? 'Sin stock' : product.stock }}
+      </span>
+    </div>
+  </div>
+  <div class="product-actions">
+    <button class="add-to-cart-button" (click)="addToCart(product)">Agregar al carrito</button>
+  </div>
+</div>

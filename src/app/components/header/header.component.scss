@@ -1,0 +1,95 @@
+.navbar {
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow-x: hidden; // <-- NUEVO: evita que el navbar genere scroll
+
+  .navbar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; // <-- NUEVO
+    max-width: 1200px; // <-- Opcional, si querés limitar el ancho en desktop
+    margin: 0 auto;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: 768px) {
+      margin-bottom: 0;
+    }
+  }
+
+  .navbar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%; // <-- NUEVO: que el ul no exceda el ancho
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: flex-end;
+      width: auto; // <-- en desktop no forzamos width 100%
+    }
+
+    li {
+      width: 100%; // <-- NUEVO: li toma el 100% del contenedor
+
+      @media (min-width: 768px) {
+        width: auto;
+      }
+
+      a {
+        display: block; // <-- NUEVO: a ocupa todo el li
+        text-decoration: none;
+        color: #333;
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+        text-align: center;
+
+        &.active {
+          background-color: #007bff;
+          color: #ffffff;
+        }
+
+        &:hover {
+          background-color: #e6f0ff;
+        }
+      }
+    }
+  }
+}
+
+.navbar-social {
+  margin-top: 1rem;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+
+  .social-icon {
+    width: 28px;
+    height: 28px;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}
