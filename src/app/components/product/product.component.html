@@ -1,17 +1,29 @@
-<div class="product-card">
+<div class="product-card" @fadeIn>
   <img class="product-image" [src]="generateImageUrl(product.id)" [alt]="product.name">
+
   <div class="product-content">
     <h2 class="product-name">{{ product.name }}</h2>
     <p class="product-price">{{ product.price | currency:'ARS' }}</p>
 
     <div class="product-stock" [ngClass]="{'out-of-stock': product.stock == 0}">
       <span class="stock-label">Stock:</span>
-      <span class="stock-value">
-        {{ product.stock === 0 ? 'Sin stock' : product.stock }}
-      </span>
+      <span class="stock-value">{{ product.stock === 0 ? 'Sin stock' : product.stock }}</span>
     </div>
   </div>
+
   <div class="product-actions">
-    <button class="add-to-cart-button" (click)="addToCart(product)">Agregar al carrito</button>
+    <ng-container *ngIf="getQuantity() === 0; else quantityControls">
+      <button class="add-to-cart-button" (click)="addOne()" [disabled]="product.stock === 0">
+        Agregar al carrito
+      </button>
+    </ng-container>
+
+    <ng-template #quantityControls>
+      <div class="quantity-controls">
+        <button class="quantity-button" (click)="removeOne()">–</button>
+        <span class="quantity-display">{{ getQuantity() }}</span>
+        <button class="quantity-button" (click)="addOne()" [disabled]="getQuantity() >= product.stock">+</button>
+      </div>
+    </ng-template>
   </div>
 </div>
