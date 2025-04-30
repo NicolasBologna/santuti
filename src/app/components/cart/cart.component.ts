@@ -22,6 +22,7 @@ export class CartComponent {
     phone: ''
   };
   isSending = false;
+  formTouched = false;
 
   selectedDues: { [productId: string]: { type: '3' | '6'; amount: number } | null } = {};
 
@@ -67,15 +68,22 @@ export class CartComponent {
     this.toastService.show('Carrito vaciado');
   }
 
-  getDuesLabel(productId: string): string {
+  getDuesLabel(productId: string, unitPrice = false): string {
     const selected = this.selectedDues[productId];
 
+    let quantity
+    if (unitPrice){
+      quantity = 1
+    } else {
+      quantity = this.cartItems.find(c => c.product.id == productId)?.quantity || 0;
+    }
+
     if (selected?.type === '3') {
-      return `3 cuotas de ${this.formatCurrency(selected.amount)}`;
+      return `3 cuotas de ${this.formatCurrency(selected.amount * quantity)}`;
     }
 
     if (selected?.type === '6') {
-      return `6 cuotas de ${this.formatCurrency(selected.amount)}`;
+      return `6 cuotas de ${this.formatCurrency(selected.amount * quantity)}`;
     }
 
     return '';
@@ -109,8 +117,10 @@ export class CartComponent {
   }
 
   sendOrder() {
+    this.formTouched = true;
+
     if (!this.customerDataIsComplete()) {
-      alert('Por favor completá tus datos antes de enviar el pedido.');
+      this.toastService.show('Por favor completá todos tus datos antes de enviar el pedido.');
       return;
     }
 

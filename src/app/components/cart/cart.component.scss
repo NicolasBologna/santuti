@@ -20,6 +20,12 @@
   margin-bottom: 1rem;
 }
 
+.billing-data {
+  font-weight: bold;
+  color: var(--color-dark);
+  font-size: 1.05rem;
+}
+
 .cart-item-header {
   display: flex;
   justify-content: space-between;
@@ -100,6 +106,11 @@
   &:active {
     background-color: #189e4b;
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .customer-form {
@@ -114,6 +125,15 @@
     border-radius: 8px;
     font-size: 1rem;
   }
+}
+
+.customer-form input.invalid {
+  border: 2px solid #e53935; // rojo alerta
+  background-color: #ffeaea;
+}
+
+.customer-form input.invalid::placeholder {
+  color: #b71c1c;
 }
 
 .loading-spinner {
