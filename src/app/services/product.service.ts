@@ -13,6 +13,8 @@ export interface Product {
   stock: number;
   category: string;
   description: string;
+  dues_3?: string;
+  dues_6?: string;
 }
 
 const PRODUCTS_CACHE_KEY = 'wildtech_products';
@@ -27,6 +29,7 @@ export class ProductService {
   private products$ = new BehaviorSubject<Product[]>([]);
   private isFetching = false;
   private urlWithTimestamp = `${this.csvUrl}&t=${timestamp}`;
+  private ignoreCacheOnLoad = true;
 
   constructor(
     private http: HttpClient,
@@ -55,7 +58,9 @@ export class ProductService {
           price: Number(p.price),
           stock: Number(p.stock),
           category: p.category,
-          description: p.description || ''
+          description: p.description || '',
+          dues_3: p.dues_3 || '',
+          dues_6: p.dues_6 || ''
         }));
       }),
       catchError(error => {
@@ -104,9 +109,16 @@ export class ProductService {
 
   private loadProductsFromCache() {
     const cacheStr = localStorage.getItem(PRODUCTS_CACHE_KEY);
+    const now = Date.now();
+
+    if (this.ignoreCacheOnLoad) {
+      this.fetchProducts();
+      this.ignoreCacheOnLoad = false;
+      return;
+    }
+
     if (cacheStr) {
       const cache = JSON.parse(cacheStr);
-      const now = Date.now();
       if (now - cache.timestamp < CACHE_TTL) {
         this.products$.next(cache.products);
       } else {
@@ -116,6 +128,7 @@ export class ProductService {
       this.fetchProducts();
     }
   }
+
 
   private scheduleRefresh() {
     timer(CACHE_TTL, CACHE_TTL)

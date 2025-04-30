@@ -26,7 +26,7 @@ export class ProductComponent {
   constructor(private cartService: CartService) {}
 
   generateImageUrl(id: string): string {
-    return `https://images.bidcom.com.ar/resize?src=https://static.bidcom.com.ar/publicacionesML/productos/${id}/1000x1000-${id}.jpg&w=500&q=100`;
+    return `assets/product-images/${id}.jpg`;
   }
 
   addOne() {
@@ -43,5 +43,11 @@ export class ProductComponent {
   getQuantity(): number {
     const cartItem = this.cartService.getCart().find(item => item.product.id === this.product.id);
     return cartItem ? cartItem.quantity : 0;
+  }
+
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/product-images/no-image.jpg';
+    target.classList.add('no-image');
   }
 }

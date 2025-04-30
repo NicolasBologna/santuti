@@ -15,10 +15,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
     trigger('modalAnim', [
       transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.92)' }),
-        animate('220ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+        animate('320ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
       ]),
       transition(':leave', [
-        animate('180ms ease-in', style({ opacity: 0, transform: 'scale(0.92)' }))
+        animate('380ms ease-in', style({ opacity: 0, transform: 'scale(0.92)' }))
       ])
     ])
   ]
@@ -54,6 +54,12 @@ export class ProductModalComponent {
     if (event.toState === 'hidden') {
       this.close.emit(); // Esto borra el componente del DOM
     }
+  }
+
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/product-images/no-image.jpg';
+    target.classList.add('no-image'); // 👈 agregamos clase extra
   }
 
 }

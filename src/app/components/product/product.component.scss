@@ -20,8 +20,12 @@
   height: 220px;
   object-fit: contain;
   object-position: center;
-  background-color: var(--color-light);
+  background-color: #ffffff;
   padding: 10px;
+}
+
+.product-image.no-image {
+  background-color: #fbf7ea; // Baby Powder
 }
 
 .product-content {

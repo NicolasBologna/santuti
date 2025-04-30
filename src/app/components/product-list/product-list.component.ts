@@ -34,6 +34,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product | null = null;
 
   constructor(private productService: ProductService) {}
+
   ngOnInit() {
     this.productService.getProducts().subscribe(data => {
       this.products = data;
@@ -55,5 +56,5 @@ export class ProductListComponent implements OnInit {
     this.selectedProduct = null;
     document.body.style.overflow = 'auto'; // 🔓 reactiva scroll
   }
-  
+
 }

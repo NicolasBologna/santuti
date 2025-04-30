@@ -1,4 +1,10 @@
-<div class="category-filter">
+<!-- SPINNER -->
+<div *ngIf="products.length === 0" class="spinner-wrapper">
+  <div class="spinner"></div>
+  <p>Cargando productos...</p>
+</div>
+
+<div class="category-filter" *ngIf="products.length !== 0">
   <h2 class="filter-title">Filtrar por categoría</h2>
   <div class="filter-buttons">
     <button
@@ -11,6 +17,7 @@
   </div>
 </div>
 
+<!-- GRILLA -->
 <div class="product-grid" @listAnimation>
   <app-product
     *ngFor="let product of filteredProducts()"
@@ -19,6 +26,7 @@
   </app-product>
 </div>
 
+<!-- MODAL -->
 <app-product-modal
   [product]="selectedProduct"
   *ngIf="selectedProduct !== null"

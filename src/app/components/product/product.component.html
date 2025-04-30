@@ -1,5 +1,10 @@
 <div class="product-card" @fadeIn>
-  <img class="product-image" [src]="generateImageUrl(product.id)" [alt]="product.name">
+  <img
+    class="product-image"
+    [src]="generateImageUrl(product.id)"
+    [alt]="product.name"
+    (error)="onImageError($event)"
+  >
 
   <div class="product-content">
     <div class="product-header">
