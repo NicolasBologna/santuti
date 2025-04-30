@@ -12,8 +12,26 @@
     <div class="summary-amount">{{ getTotal() | currency:'ARS' }}</div>
   </div>
 
-  <button class="whatsapp-button" (click)="sendOrder()">
+  <form class="customer-form">
+    <input type="text" [(ngModel)]="customerData.dni" name="dni" placeholder="DNI" (ngModelChange)="saveCustomerData()">
+    <input type="text" [(ngModel)]="customerData.name" name="name" placeholder="Nombre y Apellido" (ngModelChange)="saveCustomerData()">
+    <input type="text" [(ngModel)]="customerData.address" name="address" placeholder="Dirección" (ngModelChange)="saveCustomerData()">
+    <input type="text" [(ngModel)]="customerData.phone" name="phone" placeholder="Teléfono" (ngModelChange)="saveCustomerData()">
+  </form>
+
+  <button class="whatsapp-button"
+        (click)="sendOrder()"
+        [disabled]="!customerDataIsComplete() || isSending || cartItems.length == 0">
+
+  <ng-container *ngIf="!isSending; else loading">
     <img src="assets/whatsapp.svg" alt="WhatsApp" class="whatsapp-icon">
-    Enviar pedido
-  </button>
+    Enviar pedido por WhatsApp
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="loading-spinner"></div>
+    Enviando...
+  </ng-template>
+
+</button>
 </div>

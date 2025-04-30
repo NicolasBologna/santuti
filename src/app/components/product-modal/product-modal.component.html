@@ -1,0 +1,17 @@
+<div class="modal-backdrop" (click)="closeWithAnimation()"></div>
+
+<div class="modal-content"
+     [@modalAnim]="show ? 'visible' : 'hidden'"
+     (@modalAnim.done)="onAnimationDone($event)">
+
+
+  <button class="modal-close" (click)="closeWithAnimation()">×</button>
+
+  <img [src]="generateImageUrl(product.id)" class="modal-image">
+  <h2 class="modal-title">{{ product.name }}</h2>
+  <p class="modal-price">{{ product.price | currency:'ARS' }}</p>
+  <p class="modal-stock">Stock: {{ product.stock }}</p>
+  <p class="modal-description">{{ product.description }}</p>
+
+  <button class="add-button" (click)="addToCartAndClose()">Agregar al carrito</button>
+</div>

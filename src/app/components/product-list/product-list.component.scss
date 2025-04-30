@@ -3,4 +3,50 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   padding: 2rem;
+  background-color: var(--color-light); // Fondo claro (Baby Powder)
+}
+
+.category-filter {
+  background-color: var(--color-muted); // fondo claro sutil
+  padding: 1.5rem 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  .filter-title {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--color-dark);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+
+    button {
+      background-color: var(--color-secondary);
+      color: var(--color-light);
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+
+      &:hover {
+        background-color: var(--color-accent);
+        transform: scale(1.05);
+      }
+
+      &.active {
+        background-color: var(--color-primary);
+        color: var(--color-dark);
+        font-weight: bold;
+      }
+    }
+  }
 }

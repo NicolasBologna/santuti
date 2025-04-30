@@ -1,5 +1,5 @@
 {
-  "name": "wildtech-tienda",
+  "name": "santuti",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "ng build --base-href=/wildtech/ && npx angular-cli-ghpages --dir=dist/wildtech/browser"
+    "deploy": "ng build --base-href=/santuti/ && npx angular-cli-ghpages --dir=dist/santuti/browser"
   },
   "private": true,
   "dependencies": {

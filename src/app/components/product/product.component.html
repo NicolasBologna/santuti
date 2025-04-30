@@ -2,7 +2,10 @@
   <img class="product-image" [src]="generateImageUrl(product.id)" [alt]="product.name">
 
   <div class="product-content">
-    <h2 class="product-name">{{ product.name }}</h2>
+    <div class="product-header">
+      <h2 class="product-name">{{ product.name }}</h2>
+      <button class="view-button" (click)="viewDetails.emit()">+</button>
+    </div>
     <p class="product-price">{{ product.price | currency:'ARS' }}</p>
 
     <div class="product-stock" [ngClass]="{'out-of-stock': product.stock == 0}">

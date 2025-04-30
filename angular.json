@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "wildtech-tienda": {
+    "santuti": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/wildtech",
+            "outputPath": "dist/santuti",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "wildtech-tienda:build:production"
+              "buildTarget": "santuti:build:production"
             },
             "development": {
-              "buildTarget": "wildtech-tienda:build:development"
+              "buildTarget": "santuti:build:development"
             }
           },
           "defaultConfiguration": "development"

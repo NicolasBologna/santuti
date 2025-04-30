@@ -1,6 +1,26 @@
+<div class="category-filter">
+  <h2 class="filter-title">Filtrar por categoría</h2>
+  <div class="filter-buttons">
+    <button
+      *ngFor="let cat of categories"
+      (click)="selectedCategory = cat"
+      [class.active]="selectedCategory === cat"
+    >
+      {{ cat }}
+    </button>
+  </div>
+</div>
+
 <div class="product-grid" @listAnimation>
   <app-product
-    *ngFor="let product of products"
-    [product]="product">
+    *ngFor="let product of filteredProducts()"
+    [product]="product"
+    (viewDetails)="openProductModal(product)">
   </app-product>
 </div>
+
+<app-product-modal
+  [product]="selectedProduct"
+  *ngIf="selectedProduct !== null"
+  (close)="closeProductModal()">
+</app-product-modal>

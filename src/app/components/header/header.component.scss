@@ -1,17 +1,17 @@
 .navbar {
   width: 100%;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: var(--color-secondary); // Prussian Blue
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.75rem 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  overflow-x: hidden; // <-- NUEVO: evita que el navbar genere scroll
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
 
   .navbar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; // <-- NUEVO
-    max-width: 1200px; // <-- Opcional, si querés limitar el ancho en desktop
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
 
     @media (min-width: 768px) {
@@ -21,10 +21,12 @@
   }
 
   .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: bold;
-    color: #007bff;
+    color: var(--color-light); // Baby Powder (casi blanco)
     margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 
     @media (min-width: 768px) {
       margin-bottom: 0;
@@ -38,58 +40,52 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    width: 100%; // <-- NUEVO: que el ul no exceda el ancho
+    width: 100%;
 
     @media (min-width: 768px) {
       flex-direction: row;
       justify-content: flex-end;
-      width: auto; // <-- en desktop no forzamos width 100%
+      width: auto;
     }
 
     li {
-      width: 100%; // <-- NUEVO: li toma el 100% del contenedor
+      width: 100%;
 
       @media (min-width: 768px) {
         width: auto;
       }
 
       a {
-        display: block; // <-- NUEVO: a ocupa todo el li
+        display: block;
         text-decoration: none;
-        color: #333;
+        color: var(--color-light); // Texto claro sobre el fondo oscuro
         font-size: 1.1rem;
         padding: 0.75rem 1rem;
         border-radius: 8px;
-        transition: background-color 0.2s ease;
         text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
 
         &.active {
-          background-color: #007bff;
-          color: #ffffff;
+          background-color: var(--color-primary); // Butterscotch
+          color: var(--color-dark); // Texto oscuro para contraste
         }
 
         &:hover {
-          background-color: #e6f0ff;
+          background-color: var(--color-primary); // Butterscotch en hover
+          color: var(--color-dark);
         }
       }
     }
   }
 }
 
-.navbar-social {
-  margin-top: 1rem;
+.navbar-social .social-icon {
+  width: 28px;
+  height: 28px;
+  fill: var(--color-light); // Baby Powder (casi blanco)
+  transition: opacity 0.3s ease;
 
-  @media (min-width: 768px) {
-    margin-top: 0;
-  }
-
-  .social-icon {
-    width: 28px;
-    height: 28px;
-    transition: opacity 0.3s ease;
-
-    &:hover {
-      opacity: 0.7;
-    }
+  &:hover {
+    opacity: 0.7;
   }
 }

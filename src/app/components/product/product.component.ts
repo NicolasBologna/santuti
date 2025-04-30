@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Product } from '../../services/product.service';
@@ -21,6 +21,7 @@ import { CartService } from '../../services/cart.service';
 })
 export class ProductComponent {
   @Input() product!: Product;
+  @Output() viewDetails = new EventEmitter<void>();
 
   constructor(private cartService: CartService) {}
 

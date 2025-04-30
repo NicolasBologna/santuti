@@ -1,0 +1,6 @@
+<a routerLink="/cart" class="cart-floating" *ngIf="(totalItems$ | async)">
+  🛒
+  <span class="cart-count" *ngIf="(totalItems$ | async) as total">
+    {{ total }}
+  </span>
+</a>
