@@ -45,6 +45,13 @@
   }
 
   .product-price {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--color-price); // Butterscotch
+    margin-bottom: 0.5rem;
+  }
+
+  .product-dues{
     font-size: 1.1rem;
     font-weight: bold;
     color: var(--color-primary); // Butterscotch

@@ -14,12 +14,12 @@
   (error)="onImageError($event)"
   >
   <h2 class="modal-title">{{ product.name }}</h2>
-  <p class="modal-price">{{ product.price | currency:'ARS' }}</p>
+  <p class="modal-price">{{ product.price | currency }}</p>
   <p class="modal-dues" *ngIf="product.dues_3">
-    💳 3 cuotas de {{ product.dues_3 | currency:'ARS' }}
+    💳 3 cuotas de {{ product.dues_3 | currency }}
   </p>
   <p class="modal-dues" *ngIf="product.dues_6">
-    💳 6 cuotas de {{ product.dues_6 | currency:'ARS' }}
+    💳 6 cuotas de {{ product.dues_6 | currency }}
   </p>
   <p class="modal-stock">Stock: {{ product.stock }}</p>
   <p class="modal-description">{{ product.description }}</p>

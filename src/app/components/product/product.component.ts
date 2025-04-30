@@ -50,4 +50,8 @@ export class ProductComponent {
     target.src = 'assets/product-images/no-image.jpg';
     target.classList.add('no-image');
   }
+
+  productHasDues(){
+    return this.product.dues_3 || this.product.dues_6;
+  }
 }

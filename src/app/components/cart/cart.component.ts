@@ -9,7 +9,7 @@ const CUSTOMER_DATA_KEY = 'wildtech_customer_data';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
@@ -23,7 +23,12 @@ export class CartComponent {
   };
   isSending = false;
 
-  constructor(private cartService: CartService, private toastService: ToastService) {}
+  selectedDues: { [productId: string]: { type: '3' | '6'; amount: number } | null } = {};
+
+  constructor(
+    private cartService: CartService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.cartService.getCartObservable().subscribe(items => {
@@ -43,23 +48,104 @@ export class CartComponent {
     localStorage.setItem(CUSTOMER_DATA_KEY, JSON.stringify(this.customerData));
   }
 
+  customerDataIsComplete(): boolean {
+    return !!(
+      this.customerData.dni &&
+      this.customerData.name &&
+      this.customerData.address &&
+      this.customerData.phone
+    );
+  }
+
+  removeProduct(productId: string) {
+    this.cartService.removeProductCompletely(productId);
+    this.toastService.show('Producto eliminado del carrito');
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
+    this.toastService.show('Carrito vaciado');
+  }
+
+  getDuesLabel(productId: string): string {
+    const selected = this.selectedDues[productId];
+
+    if (selected?.type === '3') {
+      return `3 cuotas de ${this.formatCurrency(selected.amount)}`;
+    }
+
+    if (selected?.type === '6') {
+      return `6 cuotas de ${this.formatCurrency(selected.amount)}`;
+    }
+
+    return '';
+  }
+
+  private formatCurrency(amount: number): string {
+    return amount.toLocaleString('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  }
+
+
+  getTotal(): number {
+    return this.cartItems.reduce((sum, item) => {
+      const selected = this.selectedDues[item.product.id];
+      const product = item.product;
+
+      if (selected?.type === '3') {
+        return sum + selected.amount * item.quantity * 3;
+      }
+
+      if (selected?.type === '6') {
+        return sum + selected.amount * item.quantity * 6;
+      }
+
+      return sum + product.price * item.quantity;
+    }, 0);
+  }
+
   sendOrder() {
     if (!this.customerDataIsComplete()) {
       alert('Por favor completá tus datos antes de enviar el pedido.');
       return;
     }
 
-    this.isSending = true; // 🔥 Empieza a mostrar el loading
+    this.isSending = true;
 
-    // Simulamos pequeño delay para UX realista
     setTimeout(() => {
       let message = 'Hola! Quiero estos productos:\n';
+
       this.cartItems.forEach(item => {
-        message += `- ${item.product.name} x${item.quantity} - $${item.product.price * item.quantity}\n`;
+        const product = item.product;
+        const selection = this.selectedDues[product.id];
+
+        message += `- ${product.name} x${item.quantity} - `;
+
+        if (selection?.type === '3') {
+          const total = selection.amount * item.quantity * 3;
+          message += `3 cuotas de ${selection.amount.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })} `;
+          message += `(Total: ${total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })})`;
+        } else if (selection?.type === '6') {
+          const total = selection.amount * item.quantity * 6;
+          message += `6 cuotas de ${selection.amount.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })} `;
+          message += `(Total: ${total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })})`;
+        } else {
+          const total = product.price * item.quantity;
+          message += `${total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })} Contado`;
+        }
+
+        message += '\n';
       });
 
-      const total = this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-      message += `\nTotal: $${total}\n\n`;
+      message += `\nTotal: ${this.getTotal().toLocaleString('es-AR', {
+        style: 'currency',
+        currency: 'ARS'
+      })}\n\n`;
+
       message += `DNI: ${this.customerData.dni}\n`;
       message += `Nombre y Apellido: ${this.customerData.name}\n`;
       message += `Dirección: ${this.customerData.address}\n`;
@@ -68,26 +154,9 @@ export class CartComponent {
       const whatsappUrl = `https://wa.me/5493417215835?text=${encodeURIComponent(message)}`;
 
       window.open(whatsappUrl, '_blank');
-      this.cartService.clearCart(); // ✅ Vacía
+      this.cartService.clearCart();
       this.isSending = false;
       this.toastService.show('¡Pedido enviado! Carrito vaciado.');
-    }, 500); // 0.5 segundos de delay para que se vea suave
+    }, 500);
   }
-
-  getTotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  }
-
-  customerDataIsComplete(): boolean {
-    return !!(this.customerData.dni && this.customerData.name && this.customerData.address && this.customerData.phone);
-  }
-
-  removeProduct(productId: string) {
-    this.cartService.removeProductCompletely(productId);
-  }
-
-  clearCart() {
-    this.cartService.clearCart();
-  }
-
 }

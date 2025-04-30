@@ -11,7 +11,8 @@
       <h2 class="product-name">{{ product.name }}</h2>
       <button class="view-button" (click)="viewDetails.emit()">+</button>
     </div>
-    <p class="product-price">{{ product.price | currency:'ARS' }}</p>
+    <p class="product-price">{{ product.price | currency }}</p>
+    <p class="product-dues" *ngIf="productHasDues()">¡Financiación disponible!</p>
 
     <div class="product-stock" [ngClass]="{'out-of-stock': product.stock == 0}">
       <span class="stock-label">Stock:</span>

@@ -10,36 +10,45 @@
 
 .cart-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--color-light); // Baby Powder
-  padding: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--color-light);
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  margin-bottom: 1rem;
+}
 
-  .item-info {
-    display: flex;
-    flex-direction: column;
+.cart-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    .item-name {
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--color-dark); // Dark Green
-    }
-
-    .item-quantity {
-      font-size: 0.95rem;
-      color: #555555;
-      margin-top: 0.25rem;
-    }
-  }
-
-  .item-total {
+  .item-name {
     font-weight: bold;
-    font-size: 1.1rem;
-    color: var(--color-primary); // Butterscotch
+    color: var(--color-dark);
+    font-size: 1.05rem;
   }
+
+  .remove-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--color-accent);
+  }
+}
+
+.cart-item-price {
+  font-size: 1rem;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.cart-item-quantity {
+  font-size: 0.9rem;
+  color: var(--color-dark);
 }
 
 .cart-summary {
@@ -148,5 +157,40 @@
 
   &:hover {
     background-color: var(--color-accent);
+  }
+}
+
+.dues-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+
+  span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-dark);
+  }
+
+  button {
+    background-color: var(--color-secondary);
+    color: var(--color-light);
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.active {
+      background-color: var(--color-primary);
+      color: var(--color-dark);
+      font-weight: bold;
+    }
+
+    &:hover {
+      background-color: var(--color-accent);
+    }
   }
 }

@@ -13,8 +13,8 @@ export interface Product {
   stock: number;
   category: string;
   description: string;
-  dues_3?: string;
-  dues_6?: string;
+  dues_3?: number;
+  dues_6?: number;
 }
 
 const PRODUCTS_CACHE_KEY = 'wildtech_products';
@@ -59,8 +59,8 @@ export class ProductService {
           stock: Number(p.stock),
           category: p.category,
           description: p.description || '',
-          dues_3: p.dues_3 || '',
-          dues_6: p.dues_6 || ''
+          dues_3: p.dues_3 ? Number(p.dues_3) : undefined,
+          dues_6: p.dues_6 ? Number(p.dues_6) : undefined,
         }));
       }),
       catchError(error => {
