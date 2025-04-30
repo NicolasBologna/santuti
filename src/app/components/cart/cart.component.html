@@ -1,5 +1,9 @@
 <div class="cart-container">
+
+  <button *ngIf="cartItems.length > 0" class="clear-cart-button" (click)="clearCart()">Vaciar carrito</button>
+
   <div *ngFor="let item of cartItems" class="cart-item">
+    <button class="remove-button" (click)="removeProduct(item.product.id)">🗑️</button>
     <div class="item-info">
       <div class="item-name">{{ item.product.name }}</div>
       <div class="item-quantity">Cantidad: {{ item.quantity }}</div>

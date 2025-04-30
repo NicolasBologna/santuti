@@ -26,9 +26,10 @@ export class CartComponent {
   constructor(private cartService: CartService, private toastService: ToastService) {}
 
   ngOnInit() {
-    this.cartItems = this.cartService.getCart();
+    this.cartService.getCartObservable().subscribe(items => {
+      this.cartItems = items;
+    });
     this.loadCustomerData();
-
   }
 
   loadCustomerData() {
@@ -80,4 +81,13 @@ export class CartComponent {
   customerDataIsComplete(): boolean {
     return !!(this.customerData.dni && this.customerData.name && this.customerData.address && this.customerData.phone);
   }
+
+  removeProduct(productId: string) {
+    this.cartService.removeProductCompletely(productId);
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
+  }
+
 }

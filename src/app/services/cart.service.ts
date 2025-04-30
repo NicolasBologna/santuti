@@ -56,8 +56,9 @@ export class CartService {
 
   clearCart() {
     this.cart = [];
-    this.cartSubject.next(this.cart);
     this.saveCart();
+    this.cartSubject.next(this.cart);
+    this.toastService.show('Carrito vaciado');
   }
 
   removeFromCart(product: Product) {
@@ -114,4 +115,12 @@ export class CartService {
     }
     this.cartSubject.next(this.cart);
   }
+
+  removeProductCompletely(productId: string) {
+    this.cart = this.cart.filter(item => item.product.id !== productId);
+    this.saveCart();
+    this.cartSubject.next(this.cart);
+    this.toastService.show('Producto eliminado del carrito');
+  }
+
 }
