@@ -1,1 +1,6 @@
 node scripts/download-images.js
+
+
+cd .\scripts\talkiu\
+después recien correr
+node lector_compras
