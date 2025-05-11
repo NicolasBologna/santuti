@@ -15,13 +15,16 @@ import { animate, style, transition, trigger } from '@angular/animations';
     trigger('modalAnim', [
       transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.92)' }),
-        animate('320ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+        animate('320ms ease-out', style({ opacity: 1, transform: 'scale(1)' })),
       ]),
       transition(':leave', [
-        animate('380ms ease-in', style({ opacity: 0, transform: 'scale(0.92)' }))
-      ])
-    ])
-  ]
+        animate(
+          '380ms ease-in',
+          style({ opacity: 0, transform: 'scale(0.92)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ProductModalComponent {
   @Input() product!: Product;
@@ -34,7 +37,7 @@ export class ProductModalComponent {
   ) {}
 
   generateImageUrl(id: string): string {
-    return `https://images.bidcom.com.ar/resize?src=https://static.bidcom.com.ar/publicacionesML/productos/${id}/1000x1000-${id}.jpg&w=800&q=100`;
+    return `assets/product-images/${id}.jpg`;
   }
 
   addToCartAndClose() {
@@ -62,4 +65,10 @@ export class ProductModalComponent {
     target.classList.add('no-image'); // 👈 agregamos clase extra
   }
 
+  productGetPrice(product: Product, quantity: number = 1): string {
+    if (product.price_usd) {
+      return 'USD ' + product.price_usd * quantity;
+    }
+    return '$ ' + product.price * quantity;
+  }
 }

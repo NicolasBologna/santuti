@@ -1,54 +1,75 @@
 <div class="cart-container">
   <!-- Lista de productos -->
   <div *ngFor="let item of cartItems" class="cart-item">
-      <div class="cart-item-header">
-        <div class="item-name">{{ item.product.name }}</div>
-        <button class="remove-button" (click)="removeProduct(item.product.id)">🗑️</button>
-      </div>
+    <div class="cart-item-header">
+      <div class="item-name">{{ item.product.name }}</div>
+      <button class="remove-button" (click)="removeProduct(item.product.id)">
+        🗑️
+      </button>
+    </div>
 
-      <div class="cart-item-price">
-        <ng-container *ngIf="selectedDues[item.product.id]; else cashPrice">
-          {{ getDuesLabel(item.product.id, true) }}
-        </ng-container>
-        <ng-template #cashPrice>
-          {{ item.product.price | currency }}
-        </ng-template>
-      </div>
+    <div class="cart-item-price">
+      <ng-container *ngIf="selectedDues[item.product.id]; else cashPrice">
+        {{ getDuesLabel(item.product.id, true) }}
+      </ng-container>
+      <ng-template #cashPrice>
+        {{ productGetPrice(item) }}
+      </ng-template>
+    </div>
 
-      <div *ngIf="item.product.dues_3 || item.product.dues_6" class="dues-buttons">
-        <span>Financiación:</span>
+    <div
+      *ngIf="item.product.dues_3 || item.product.dues_6"
+      class="dues-buttons"
+    >
+      <span>Financiación:</span>
 
-        <button
-          (click)="selectedDues[item.product.id] = null"
-          [class.active]="!selectedDues[item.product.id]"
-        >Contado</button>
+      <button
+        (click)="selectedDues[item.product.id] = null"
+        [class.active]="!selectedDues[item.product.id]"
+      >
+        Contado
+      </button>
 
-        <button
-          *ngIf="item.product.dues_3"
-          (click)="selectedDues[item.product.id] = { type: '3', amount: item.product.dues_3! }"
-          [class.active]="selectedDues[item.product.id]?.type === '3'"
-        >3 cuotas</button>
+      <button
+        *ngIf="item.product.dues_3"
+        (click)="
+          selectedDues[item.product.id] = {
+            type: '3',
+            amount: item.product.dues_3!
+          }
+        "
+        [class.active]="selectedDues[item.product.id]?.type === '3'"
+      >
+        3 cuotas
+      </button>
 
-        <button
-          *ngIf="item.product.dues_6"
-          (click)="selectedDues[item.product.id] = { type: '6', amount: item.product.dues_6! }"
-          [class.active]="selectedDues[item.product.id]?.type === '6'"
-        >6 cuotas</button>
-      </div>
+      <button
+        *ngIf="item.product.dues_6"
+        (click)="
+          selectedDues[item.product.id] = {
+            type: '6',
+            amount: item.product.dues_6!
+          }
+        "
+        [class.active]="selectedDues[item.product.id]?.type === '6'"
+      >
+        6 cuotas
+      </button>
+    </div>
 
-      <div class="cart-item-quantity">
-        Cantidad: {{ item.quantity }}
-      </div>
+    <div class="cart-item-quantity">Cantidad: {{ item.quantity }}</div>
 
-      <div class="cart-item-price" *ngIf="item.quantity > 1">
-        Subtotal:
-        <ng-container *ngIf="selectedDues[item.product.id]; else cashPriceSubtotal">
-          {{ getDuesLabel(item.product.id) }}
-        </ng-container>
-        <ng-template #cashPriceSubtotal>
-          {{ item.product.price * item.quantity | currency }}
-        </ng-template>
-      </div>
+    <div class="cart-item-price" *ngIf="item.quantity > 1">
+      Subtotal:
+      <ng-container
+        *ngIf="selectedDues[item.product.id]; else cashPriceSubtotal"
+      >
+        {{ getDuesLabel(item.product.id) }}
+      </ng-container>
+      <ng-template #cashPriceSubtotal>
+        {{ item.product.price * item.quantity | currency }}
+      </ng-template>
+    </div>
   </div>
 
   <!-- Total -->
@@ -68,7 +89,7 @@
       placeholder="DNI"
       [class.invalid]="formTouched && !customerData.dni"
       (ngModelChange)="saveCustomerData()"
-    >
+    />
     <input
       type="text"
       [(ngModel)]="customerData.name"
@@ -76,7 +97,7 @@
       placeholder="Nombre y Apellido"
       [class.invalid]="formTouched && !customerData.name"
       (ngModelChange)="saveCustomerData()"
-    >
+    />
     <input
       type="text"
       [(ngModel)]="customerData.address"
@@ -84,7 +105,7 @@
       placeholder="Dirección"
       [class.invalid]="formTouched && !customerData.address"
       (ngModelChange)="saveCustomerData()"
-    >
+    />
     <input
       type="text"
       [(ngModel)]="customerData.phone"
@@ -92,16 +113,17 @@
       placeholder="Teléfono"
       [class.invalid]="formTouched && !customerData.phone"
       (ngModelChange)="saveCustomerData()"
-    >
+    />
   </form>
 
   <!-- Botón de enviar -->
-  <button class="whatsapp-button"
-          (click)="sendOrder()"
-          [disabled]="isSending || cartItems.length === 0">
-
+  <button
+    class="whatsapp-button"
+    (click)="sendOrder()"
+    [disabled]="isSending || cartItems.length === 0"
+  >
     <ng-container *ngIf="!isSending; else loading">
-      <img src="assets/whatsapp.svg" alt="WhatsApp" class="whatsapp-icon">
+      <img src="assets/whatsapp.svg" alt="WhatsApp" class="whatsapp-icon" />
       Enviar pedido por WhatsApp
     </ng-container>
 
@@ -109,12 +131,14 @@
       <div class="loading-spinner"></div>
       Enviando...
     </ng-template>
-
   </button>
 
   <!-- Vaciar carrito -->
-  <button *ngIf="cartItems.length > 0" class="clear-cart-button" (click)="clearCart()">
+  <button
+    *ngIf="cartItems.length > 0"
+    class="clear-cart-button"
+    (click)="clearCart()"
+  >
     Vaciar carrito
   </button>
-
 </div>

@@ -12,12 +12,15 @@ import { CartService } from '../../services/cart.service';
     trigger('fadeIn', [
       transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.95)' }),
-        animate('1000ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
-      ])
-    ])
+        animate(
+          '1000ms ease-out',
+          style({ opacity: 1, transform: 'scale(1)' })
+        ),
+      ]),
+    ]),
   ],
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  styleUrls: ['./product.component.scss'],
 })
 export class ProductComponent {
   @Input() product!: Product;
@@ -41,7 +44,9 @@ export class ProductComponent {
   }
 
   getQuantity(): number {
-    const cartItem = this.cartService.getCart().find(item => item.product.id === this.product.id);
+    const cartItem = this.cartService
+      .getCart()
+      .find((item) => item.product.id === this.product.id);
     return cartItem ? cartItem.quantity : 0;
   }
 
@@ -51,7 +56,14 @@ export class ProductComponent {
     target.classList.add('no-image');
   }
 
-  productHasDues(){
+  productHasDues() {
     return this.product.dues_3 || this.product.dues_6;
+  }
+
+  productGetPrice() {
+    if (this.product.price_usd) {
+      return 'USD ' + this.product.price_usd;
+    }
+    return '$ ' + this.product.price;
   }
 }

@@ -15,6 +15,7 @@ export interface Product {
   description: string;
   dues_3?: number;
   dues_6?: number;
+  price_usd?: number;
 }
 
 const PRODUCTS_CACHE_KEY = 'wildtech_products';
@@ -22,10 +23,11 @@ const CACHE_TTL = 3 * 60 * 1000;
 const timestamp = new Date().getTime();
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-  private csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8_vceVhE_iFtOwpvbN8oW2B2YsqSFuQoDU5xBEB2Aj2O1WSR4ofcLER03fFJUSiKZBkXA9ERK6xVx/pub?output=csv';
+  private csvUrl =
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8_vceVhE_iFtOwpvbN8oW2B2YsqSFuQoDU5xBEB2Aj2O1WSR4ofcLER03fFJUSiKZBkXA9ERK6xVx/pub?output=csv';
   private products$ = new BehaviorSubject<Product[]>([]);
   private isFetching = false;
   private urlWithTimestamp = `${this.csvUrl}&t=${timestamp}`;
@@ -49,34 +51,41 @@ export class ProductService {
 
     this.isFetching = true;
 
-    this.http.get(this.urlWithTimestamp, { responseType: 'text' }).pipe(
-      map(csvData => {
-        const parsed = Papa.parse<Product>(csvData, { header: true, skipEmptyLines: true });
-        return parsed.data.map(p => ({
-          id: p.id,
-          name: p.name,
-          price: Number(p.price),
-          stock: Number(p.stock),
-          category: p.category,
-          description: p.description || '',
-          dues_3: p.dues_3 ? Number(p.dues_3) : undefined,
-          dues_6: p.dues_6 ? Number(p.dues_6) : undefined,
-        }));
-      }),
-      catchError(error => {
-        console.error('Error fetching products', error);
+    this.http
+      .get(this.urlWithTimestamp, { responseType: 'text' })
+      .pipe(
+        map((csvData) => {
+          const parsed = Papa.parse<Product>(csvData, {
+            header: true,
+            skipEmptyLines: true,
+          });
+          return parsed.data.map((p) => ({
+            id: p.id,
+            name: p.name,
+            price: Number(p.price),
+            stock: Number(p.stock),
+            category: p.category,
+            description: p.description || '',
+            dues_3: p.dues_3 ? Number(p.dues_3) : undefined,
+            dues_6: p.dues_6 ? Number(p.dues_6) : undefined,
+            price_usd: p.price_usd ? Number(p.price_usd) : undefined,
+          }));
+        }),
+        catchError((error) => {
+          console.error('Error fetching products', error);
+          this.isFetching = false;
+          return of([]); // Previene que el stream explote
+        })
+      )
+      .subscribe((products) => {
+        if (products.length > 0 && this.isDifferent(products)) {
+          this.products$.next(products);
+          this.saveProductsToCache(products);
+          this.cartService.syncCartWithProducts(products);
+          //this.toastService.show('¡Productos actualizados!');
+        }
         this.isFetching = false;
-        return of([]); // Previene que el stream explote
-      })
-    ).subscribe(products => {
-      if (products.length > 0 && this.isDifferent(products)) {
-        this.products$.next(products);
-        this.saveProductsToCache(products);
-        this.cartService.syncCartWithProducts(products);
-        this.toastService.show('¡Productos actualizados!');
-      }
-      this.isFetching = false;
-    });
+      });
   }
 
   private isDifferent(newProducts: Product[]): boolean {
@@ -86,12 +95,14 @@ export class ProductService {
 
     for (let i = 0; i < newProducts.length; i++) {
       const newP = newProducts[i];
-      const currentP = currentProducts.find(p => p.id === newP.id);
+      const currentP = currentProducts.find((p) => p.id === newP.id);
 
-      if (!currentP ||
-          currentP.price !== newP.price ||
-          currentP.stock !== newP.stock ||
-          currentP.name !== newP.name) {
+      if (
+        !currentP ||
+        currentP.price !== newP.price ||
+        currentP.stock !== newP.stock ||
+        currentP.name !== newP.name
+      ) {
         return true;
       }
     }
@@ -102,7 +113,7 @@ export class ProductService {
   private saveProductsToCache(products: Product[]) {
     const cache = {
       timestamp: Date.now(),
-      products: products
+      products: products,
     };
     localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify(cache));
   }
@@ -128,7 +139,6 @@ export class ProductService {
       this.fetchProducts();
     }
   }
-
 
   private scheduleRefresh() {
     timer(CACHE_TTL, CACHE_TTL)

@@ -11,7 +11,7 @@ const CUSTOMER_DATA_KEY = 'wildtech_customer_data';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.scss'
+  styleUrl: './cart.component.scss',
 })
 export class CartComponent {
   cartItems: CartItem[] = [];
@@ -19,12 +19,14 @@ export class CartComponent {
     dni: '',
     name: '',
     address: '',
-    phone: ''
+    phone: '',
   };
   isSending = false;
   formTouched = false;
 
-  selectedDues: { [productId: string]: { type: '3' | '6'; amount: number } | null } = {};
+  selectedDues: {
+    [productId: string]: { type: '3' | '6'; amount: number } | null;
+  } = {};
 
   constructor(
     private cartService: CartService,
@@ -32,7 +34,7 @@ export class CartComponent {
   ) {}
 
   ngOnInit() {
-    this.cartService.getCartObservable().subscribe(items => {
+    this.cartService.getCartObservable().subscribe((items) => {
       this.cartItems = items;
     });
     this.loadCustomerData();
@@ -71,11 +73,12 @@ export class CartComponent {
   getDuesLabel(productId: string, unitPrice = false): string {
     const selected = this.selectedDues[productId];
 
-    let quantity
-    if (unitPrice){
-      quantity = 1
+    let quantity;
+    if (unitPrice) {
+      quantity = 1;
     } else {
-      quantity = this.cartItems.find(c => c.product.id == productId)?.quantity || 0;
+      quantity =
+        this.cartItems.find((c) => c.product.id == productId)?.quantity || 0;
     }
 
     if (selected?.type === '3') {
@@ -94,10 +97,9 @@ export class CartComponent {
       style: 'currency',
       currency: 'ARS',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     });
   }
-
 
   getTotal(): number {
     return this.cartItems.reduce((sum, item) => {
@@ -120,7 +122,9 @@ export class CartComponent {
     this.formTouched = true;
 
     if (!this.customerDataIsComplete()) {
-      this.toastService.show('Por favor completá todos tus datos antes de enviar el pedido.');
+      this.toastService.show(
+        'Por favor completá todos tus datos antes de enviar el pedido.'
+      );
       return;
     }
 
@@ -129,7 +133,7 @@ export class CartComponent {
     setTimeout(() => {
       let message = 'Hola! Quiero estos productos:\n';
 
-      this.cartItems.forEach(item => {
+      this.cartItems.forEach((item) => {
         const product = item.product;
         const selection = this.selectedDues[product.id];
 
@@ -137,36 +141,52 @@ export class CartComponent {
 
         if (selection?.type === '3') {
           const total = selection.amount * item.quantity * 3;
-          message += `3 cuotas de ${selection.amount.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })} `;
-          message += `(Total: ${total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })})`;
+          message += `3 cuotas de ${selection.amount.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+          })} `;
+          message += `(Total: ${total.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+          })})`;
         } else if (selection?.type === '6') {
           const total = selection.amount * item.quantity * 6;
-          message += `6 cuotas de ${selection.amount.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })} `;
-          message += `(Total: ${total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })})`;
+          message += `6 cuotas de ${selection.amount.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+          })} `;
+          message += `(Total: ${total.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+          })})`;
         } else {
-          const total = product.price * item.quantity;
-          message += `${total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })} Contado`;
+          const total = this.productGetPrice(item, item.quantity);
+          message += `${total} Contado`;
         }
 
         message += '\n';
       });
-
-      message += `\nTotal: ${this.getTotal().toLocaleString('es-AR', {
-        style: 'currency',
-        currency: 'ARS'
-      })}\n\n`;
 
       message += `DNI: ${this.customerData.dni}\n`;
       message += `Nombre y Apellido: ${this.customerData.name}\n`;
       message += `Dirección: ${this.customerData.address}\n`;
       message += `Teléfono: ${this.customerData.phone}`;
 
-      const whatsappUrl = `https://wa.me/5493417215835?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/5493417215835?text=${encodeURIComponent(
+        message
+      )}`;
 
       window.open(whatsappUrl, '_blank');
       this.cartService.clearCart();
       this.isSending = false;
       this.toastService.show('¡Pedido enviado! Carrito vaciado.');
     }, 500);
+  }
+
+  productGetPrice(item: CartItem, quantity: number = 1): string {
+    if (item.product.price_usd) {
+      return 'USD ' + item.product.price_usd * quantity;
+    }
+    return '$ ' + item.product.price * quantity;
   }
 }

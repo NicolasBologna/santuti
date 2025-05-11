@@ -1,6 +1,6 @@
-.cart-floating {
+.contact-floating {
   position: fixed;
-  bottom: 7rem;
+  bottom: 2rem;
   right: 2rem;
   background-color: var(--color-primary); // Butterscotch
   color: var(--color-dark); // Dark green para el ícono 🛒
@@ -21,21 +21,4 @@
     transform: scale(1.05);
     cursor: pointer;
   }
-}
-
-.cart-count {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: var(--color-accent); // Burgundy
-  color: var(--color-light); // Baby powder (blanco)
-  font-size: 0.8rem;
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
