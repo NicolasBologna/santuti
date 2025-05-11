@@ -4,18 +4,7 @@ const axios = require('axios');
 
 // Lista de IDs de productos
 const productIds = [
-  'AV000029',
-  'MASAJ301',
-  'INFLAGLO13',
-  'PARLN019',
-  'AV000212',
-  'CWIR0001',
-  'CAFETE02',
-  'CAFETE10',
-  'MOLIN031',
-  'P2P00047',
-  'P2P00053',
-  'KPARRI03'
+  'MASAJ301', 'AV000212', 'KPARRI03', 'PARLN019', 'CWIR0001', 'P2P00047', 'P2P00053', 'CORTPE01', 'ESTIMU10', 'TETE0001', 'GRINDER3', 'BC000343'
 ];
 
 const outputDir = path.join(__dirname, '../src/assets/product-images');
