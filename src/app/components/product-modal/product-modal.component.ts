@@ -4,6 +4,7 @@ import { Product } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { ToastService } from '../../services/toast.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { formatCurrency, calculateProductPrice } from '../../utils/price.util';
 
 @Component({
   selector: 'app-product-modal',
@@ -66,9 +67,6 @@ export class ProductModalComponent {
   }
 
   productGetPrice(product: Product, quantity: number = 1): string {
-    if (product.price_usd) {
-      return 'USD ' + product.price_usd * quantity;
-    }
-    return '$ ' + product.price * quantity;
+    return calculateProductPrice(product, quantity);
   }
 }

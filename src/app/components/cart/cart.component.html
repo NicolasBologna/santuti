@@ -75,7 +75,12 @@
   <!-- Total -->
   <div class="cart-summary">
     <span>Total a pagar:</span>
-    <strong>{{ getTotal() | currency }}</strong>
+    <div>
+      <strong>Total en pesos: {{ getTotal().totalARS | currency:'ARS' }}</strong>
+    </div>
+    <div *ngIf="getTotal().totalUSD > 0">
+      <strong>Total en dólares: {{ getTotal().totalUSD | currency:'USD' }}</strong>
+    </div>
   </div>
 
   <!-- Formulario de datos -->

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WHATSAPP_BASE_URL } from '../../app.config';
 
 @Component({
   selector: 'app-contact-floating',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './contact-floating.component.scss'
 })
 export class ContactFloatingComponent {
-
+  message = 'Hola! Quería consultarte por los productos de la web';
+  whatsappUrl = `${WHATSAPP_BASE_URL}${encodeURIComponent(this.message)}`;
 }

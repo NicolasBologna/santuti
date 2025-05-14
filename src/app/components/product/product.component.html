@@ -29,13 +29,24 @@
 
   <div class="product-actions">
     <ng-container *ngIf="getQuantity() === 0; else quantityControls">
-      <button
-        class="add-to-cart-button"
-        (click)="addOne()"
-        [disabled]="product.stock === 0"
-      >
-        Agregar al carrito
-      </button>
+      <ng-container *ngIf="productGetPrice() !== 'Consultar precio'; else consultPrice">
+        <button
+          class="add-to-cart-button"
+          (click)="addOne()"
+          [disabled]="product.stock === 0"
+        >
+          Agregar al carrito
+        </button>
+      </ng-container>
+
+      <ng-template #consultPrice>
+        <button
+          class="add-to-cart-button"
+          (click)="consultProductOnWhatsApp()"
+        >
+          Consultar por WhatsApp
+        </button>
+      </ng-template>
     </ng-container>
 
     <ng-template #quantityControls>

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Product } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
+import { calculateProductPrice } from '../../utils/price.util';
+import { WHATSAPP_BASE_URL } from '../../app.config';
 
 @Component({
   selector: 'app-product',
@@ -60,10 +62,13 @@ export class ProductComponent {
     return this.product.dues_3 || this.product.dues_6;
   }
 
-  productGetPrice() {
-    if (this.product.price_usd) {
-      return 'USD ' + this.product.price_usd;
-    }
-    return '$ ' + this.product.price;
+  productGetPrice(): string {
+    return calculateProductPrice(this.product);
+  }
+
+  consultProductOnWhatsApp() {
+    const whatsappMessage = `Hola! Quiero consultar el precio del producto: ${this.product.name}`;
+    const whatsappUrl = `${WHATSAPP_BASE_URL}${encodeURIComponent(whatsappMessage)}`;
+    window.open(whatsappUrl, '_blank');
   }
 }
