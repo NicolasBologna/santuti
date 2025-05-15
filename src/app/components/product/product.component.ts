@@ -30,10 +30,6 @@ export class ProductComponent {
 
   constructor(private cartService: CartService) {}
 
-  generateImageUrl(id: string): string {
-    return `assets/product-images/${id}.jpg`;
-  }
-
   addOne() {
     const success = this.cartService.addToCart(this.product);
     if (!success) {
@@ -68,7 +64,9 @@ export class ProductComponent {
 
   consultProductOnWhatsApp() {
     const whatsappMessage = `Hola! Quiero consultar el precio del producto: ${this.product.name}`;
-    const whatsappUrl = `${WHATSAPP_BASE_URL}${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = `${WHATSAPP_BASE_URL}${encodeURIComponent(
+      whatsappMessage
+    )}`;
     window.open(whatsappUrl, '_blank');
   }
 }

@@ -1,7 +1,7 @@
 <div class="product-card" @fadeIn>
   <img
     class="product-image"
-    [src]="generateImageUrl(product.id)"
+    [src]="product.image"
     [alt]="product.name"
     (error)="onImageError($event)"
   />
@@ -29,7 +29,9 @@
 
   <div class="product-actions">
     <ng-container *ngIf="getQuantity() === 0; else quantityControls">
-      <ng-container *ngIf="productGetPrice() !== 'Consultar precio'; else consultPrice">
+      <ng-container
+        *ngIf="productGetPrice() !== 'Consultar precio'; else consultPrice"
+      >
         <button
           class="add-to-cart-button"
           (click)="addOne()"
@@ -40,10 +42,7 @@
       </ng-container>
 
       <ng-template #consultPrice>
-        <button
-          class="add-to-cart-button"
-          (click)="consultProductOnWhatsApp()"
-        >
+        <button class="add-to-cart-button" (click)="consultProductOnWhatsApp()">
           Consultar por WhatsApp
         </button>
       </ng-template>

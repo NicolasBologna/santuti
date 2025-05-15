@@ -16,6 +16,7 @@ export interface Product {
   dues_3?: number;
   dues_6?: number;
   price_usd?: number;
+  image?: string;
 }
 
 const PRODUCTS_CACHE_KEY = 'wildtech_products';
@@ -64,6 +65,7 @@ export class ProductService {
             name: p.name,
             price: Number(p.price),
             stock: Number(p.stock),
+            image: p.image,
             category: p.category,
             description: p.description || '',
             dues_3: p.dues_3 ? Number(p.dues_3) : undefined,

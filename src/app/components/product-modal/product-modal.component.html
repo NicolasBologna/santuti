@@ -8,7 +8,7 @@
   <button class="modal-close" (click)="closeWithAnimation()">×</button>
 
   <img
-    [src]="generateImageUrl(product.id)"
+    [src]="product.image"
     [alt]="product.name"
     class="modal-image"
     (error)="onImageError($event)"
